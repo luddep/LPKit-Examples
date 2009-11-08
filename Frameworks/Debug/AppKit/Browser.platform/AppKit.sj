@@ -28246,7 +28246,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithLevel:"), funct
 },["CPArray"])]);
 }
 
-p;22;CPPlatformWindow+DOM.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.ji;9;CPEvent.ji;17;CPCompatibility.ji;18;CPDOMWindowLayer.ji;12;CPPlatform.ji;18;CPPlatformWindow.jc;40358;
+p;22;CPPlatformWindow+DOM.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.ji;9;CPEvent.ji;17;CPCompatibility.ji;18;CPDOMWindowLayer.ji;12;CPPlatform.ji;18;CPPlatformWindow.jc;40337;
 var DoubleClick = "dblclick",
     MouseDown = "mousedown",
     MouseUp = "mouseup",
@@ -28727,7 +28727,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         newEvent.shiftKey = newEvent.ctrlKey = newEvent.altKey = newEvent.metaKey = false;
         newEvent.preventDefault = function(){if(aDOMEvent.preventDefault) aDOMEvent.preventDefault()};
         newEvent.stopPropagation = function(){if(aDOMEvent.stopPropagation) aDOMEvent.stopPropagation()};
-        objj_msgSend(self, "_bridgeMouseEvent:", newEvent);
+        objj_msgSend(self, "mouseEvent:", newEvent);
         return;
     }
     else
@@ -28745,9 +28745,9 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     if (type === "dblclick")
     {
         _overriddenEventType = CPDOMEventMouseDown;
-        objj_msgSend(self, "_bridgeMouseEvent:", aDOMEvent);
+        objj_msgSend(self, "mouseEvent:", aDOMEvent);
         _overriddenEventType = CPDOMEventMouseUp;
-        objj_msgSend(self, "_bridgeMouseEvent:", aDOMEvent);
+        objj_msgSend(self, "mouseEvent:", aDOMEvent);
         _overriddenEventType = nil;
         return;
     }

@@ -15027,7 +15027,7 @@ objj_msgSend(_29,"encodeObject:forKey:",_view,_22);
 objj_msgSend(_29,"encodeObject:forKey:",_auxiliaryView,_23);
 }
 })]);
-p;13;CPTextField.ji;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;17743;
+p;13;CPTextField.ji;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;17745;
 CPLineBreakByWordWrapping=0;
 CPLineBreakByCharWrapping=1;
 CPLineBreakByClipping=2;
@@ -15038,7 +15038,7 @@ CPTextFieldSquareBezel=0;
 CPTextFieldRoundedBezel=1;
 CPTextFieldDidFocusNotification="CPTextFieldDidFocusNotification";
 CPTextFieldDidBlurNotification="CPTextFieldDidBlurNotification";
-var _1="•";
+var _1="‚Ä¢";
 var _2=objj_getClass("CPString");
 if(!_2){
 objj_exception_throw(new objj_exception(OBJJClassNotFoundException,"*** Could not find definition for class \"CPString\""));
@@ -24098,7 +24098,7 @@ with(_14){
 return _windows;
 }
 })]);
-p;22;CPPlatformWindow+DOM.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.ji;9;CPEvent.ji;17;CPCompatibility.ji;18;CPDOMWindowLayer.ji;12;CPPlatform.ji;18;CPPlatformWindow.jc;24074;
+p;22;CPPlatformWindow+DOM.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.ji;9;CPEvent.ji;17;CPCompatibility.ji;18;CPDOMWindowLayer.ji;12;CPPlatform.ji;18;CPPlatformWindow.jc;24053;
 var _1="dblclick",_2="mousedown",_3="mouseup",_4="mousemove",_5="mousedrag",_6="keyup",_7="keydown",_8="keypress",_9="copy",_a="paste",_b="resize",_c="mousewheel",_d="touchstart",_e="touchmove",_f="touchend",_10="touchcancel";
 var _11=[];
 _11["INPUT"]=YES;
@@ -24549,7 +24549,7 @@ if(_83.stopPropagation){
 _83.stopPropagation();
 }
 };
-objj_msgSend(_81,"_bridgeMouseEvent:",_84);
+objj_msgSend(_81,"mouseEvent:",_84);
 return;
 }else{
 if(_83.preventDefault){
@@ -24565,9 +24565,9 @@ with(_86){
 var _89=_overriddenEventType||_88.type;
 if(_89==="dblclick"){
 _overriddenEventType=CPDOMEventMouseDown;
-objj_msgSend(_86,"_bridgeMouseEvent:",_88);
+objj_msgSend(_86,"mouseEvent:",_88);
 _overriddenEventType=CPDOMEventMouseUp;
-objj_msgSend(_86,"_bridgeMouseEvent:",_88);
+objj_msgSend(_86,"mouseEvent:",_88);
 _overriddenEventType=nil;
 return;
 }

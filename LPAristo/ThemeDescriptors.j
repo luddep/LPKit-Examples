@@ -6,8 +6,8 @@
  * Copyright 2009, Your Company All rights reserved.
  */
 
-@import <BlendKit/BKThemeDescriptor.j>
 @import <LPKit/LPKit.j>
+@import <BlendKit/BKThemeDescriptor.j>
 
 @implementation LPAristoThemeDescriptor : BKThemeDescriptor
 {
@@ -22,14 +22,14 @@
 {
     var aSwitch = [[LPSwitch alloc] initWithFrame:CGRectMake(0,0,77,24)];
     
-    var offBackgroundImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/switch-off-background.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))];
+    var offBackgroundImage = [_CPCibCustomResource imageResourceWithName:@"switch-off-background.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))];
     [aSwitch setValue:[CPColor colorWithPatternImage:offBackgroundImage] forThemeAttribute:@"off-background-color"];
     
-    var onBackgroundImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/switch-on-background.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))];
+    var onBackgroundImage = [_CPCibCustomResource imageResourceWithName:@"switch-on-background.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))];
     [aSwitch setValue:[CPColor colorWithPatternImage:onBackgroundImage] forThemeAttribute:@"on-background-color"];
     
-    var knobBackgroundImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/switch-knob.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))],
-        highlightedKnobBackgroundImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/switch-knob-highlighted.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))];
+    var knobBackgroundImage = [_CPCibCustomResource imageResourceWithName:@"switch-knob.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))],
+        highlightedKnobBackgroundImage = [_CPCibCustomResource imageResourceWithName:@"switch-knob-highlighted.png" size:CGSizeMake(CGRectGetWidth([aSwitch bounds]), CGRectGetHeight([aSwitch bounds]))];
     [aSwitch setValue:[CPColor colorWithPatternImage:knobBackgroundImage] forThemeAttribute:@"knob-background-color" inState:CPThemeStateNormal];
     [aSwitch setValue:[CPColor colorWithPatternImage:highlightedKnobBackgroundImage] forThemeAttribute:@"knob-background-color" inState:CPThemeStateNormal | CPThemeStateHighlighted];
     [aSwitch setValue:CGSizeMake(30,24) forThemeAttribute:@"knob-size"];
@@ -61,14 +61,14 @@
 
     /* Calendar View
     */
-    var backgroundImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/LPCalendarView/background.png" size:CGSizeMake(1.0, 21.0)];
+    var backgroundImage = [_CPCibCustomResource imageResourceWithName:@"LPCalendarView/background.png" size:CGSizeMake(1.0, 21.0)];
     [calendarView setValue:[CPColor colorWithPatternImage:backgroundImage] forThemeAttribute:@"background-color"];
 
     /* Header View
     */
     
-    var backgroundImage = [[CPImage alloc] initWithContentsOfFile:@"Resources/LPCalendarView/header-background.png" size:CGSizeMake(182.0, 40.0)];
-    [calendarView setValue:[CPColor colorWithPatternImage:backgroundImage] forThemeAttribute:@"header-background-color" inState:CPThemeStateNormal];
+    var headerBackgroundImage = [_CPCibCustomResource imageResourceWithName:@"LPCalendarView/header-background.png" size:CGSizeMake(182.0, 40.0)];
+    [calendarView setValue:[CPColor colorWithPatternImage:headerBackgroundImage] forThemeAttribute:@"header-background-color" inState:CPThemeStateNormal];
     
     [calendarView setValue:[CPFont boldSystemFontOfSize:11.0] forThemeAttribute:@"header-font" inState:CPThemeStateNormal];
     [calendarView setValue:[CPColor colorWithHexString:@"333"] forThemeAttribute:@"header-text-color" inState:CPThemeStateNormal];

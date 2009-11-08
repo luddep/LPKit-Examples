@@ -4,33 +4,48 @@
  *
  * Created by Ludwig Pettersson on October 12, 2009.
  */
-
+ 
 @import <Foundation/CPObject.j>
-@import <LPKit/LPSlideView.j>
-@import <LPKit/LPCalendarView.j>
-@import <LPKit/LPSparkLine.j>
+@import <LPKit/LPKit.j>
+
+var LPAristo;
 
 @implementation AppController : CPObject
 {
+    CPWindow theWindow;
+    
     LPSlideView slideView;
     CPTextField calendarSelectionLabel;
+    CPTextField switchStatusLabel;
 }
-
+ 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
-        contentView = [theWindow contentView];
+    theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
+    [theWindow orderFront:self];
+    
+    var lpAristoTheme = [[CPThemeBlend alloc] initWithContentsOfURL:@"LPAristo/Build/Debug/LPAristo.blend"]; 
+    [lpAristoTheme loadWithDelegate:self];
 
+}
+
+- (void)blendDidFinishLoading:(CPBundle)aBundle
+{
+    LPAristo = [CPTheme themeNamed:@"LPAristo"];
+    //[CPTheme setDefaultTheme:[CPTheme themeNamed:@"LPAristo"]];
+    
+    var contentView = [theWindow contentView];
+ 
     /*
     
         LPSlideView
     
     */
-
+ 
     var slideViewLabel = [CPTextField labelWithTitle:@"LPSlideView"];
     [slideViewLabel setFrameOrigin:CGPointMake(100, 70)];
     [contentView addSubview:slideViewLabel];
-
+ 
     slideView = [[LPSlideView alloc] initWithFrame:CGRectMake(100,100,200,100)];
     //[slideView setSlideDirection:LPSlideViewVerticalDirection];
     [contentView addSubview:slideView];
@@ -60,35 +75,36 @@
     [segmentedControl setSelectedSegment:0];
     
     [contentView addSubview:segmentedControl];
-
+ 
     /*
     
         LPCalendarView
     
     */
-
+ 
     var slideViewLabel = [CPTextField labelWithTitle:@"LPCalendarView"];
     [slideViewLabel setFrameOrigin:CGPointMake(400, 70)];
     [contentView addSubview:slideViewLabel];
-
+ 
     var calendarView = [[LPCalendarView alloc] initWithFrame:CGRectMake(400, 100, 180, 160)];
+    [calendarView setTheme:LPAristo];
     [calendarView setMonth:[CPDate date]];
     [calendarView setDelegate:self];
     [contentView addSubview:calendarView];
     
-    calendarSelectionLabel = [CPTextField labelWithTitle:@""];
+    calendarSelectionLabel = [CPTextField textFieldWithStringValue:@"" placeholder:@"selection" width:300];
     [calendarSelectionLabel setFrameOrigin:CGPointMake(400,270)]
     [contentView addSubview:calendarSelectionLabel];
-
+ 
     /*
     
-        LPCalendarView
+        LPSparkLine
     
     */
-
-    var slideViewLabel = [CPTextField labelWithTitle:@"LPSparkLine"];
-    [slideViewLabel setFrameOrigin:CGPointMake(680, 70)];
-    [contentView addSubview:slideViewLabel];
+ 
+    var sparkLineLabel = [CPTextField labelWithTitle:@"LPSparkLine"];
+    [sparkLineLabel setFrameOrigin:CGPointMake(680, 70)];
+    [contentView addSubview:sparkLineLabel];
     
     var sparkLine = [[LPSparkLine alloc] initWithFrame:CGRectMake(680, 100, 100, 30)];
     [sparkLine setLineWeight:2.0];
@@ -96,28 +112,47 @@
     [sparkLine setShadowColor:[CPColor colorWithHexString:@"999"]];
     [sparkLine setData:[10,25,30,42,10,30,22,70,30,21,44,21,77,55,88,54]];
     [contentView addSubview:sparkLine];
-
+ 
+ 
     /*
-        --
-    */
     
-    [theWindow orderFront:self];
-
-    // Uncomment the following line to turn on the standard menu bar.
-    //[CPMenu setMenuBarVisible:YES];
+        LPSwitch
+    
+    */
+ 
+    var switchLabel = [CPTextField labelWithTitle:@"LPSwitch"];
+    [switchLabel setFrameOrigin:CGPointMake(100, 340)];
+    [contentView addSubview:switchLabel];
+    
+    var aSwitch = [[LPSwitch alloc] initWithFrame:CGRectMake(100,380,77,24)];
+    [aSwitch setTheme:LPAristo];
+    [aSwitch setTarget:self];
+    [aSwitch setAction:@selector(switchDidChange:)];
+    [contentView addSubview:aSwitch];
+    
+    switchStatusLabel = [CPTextField labelWithTitle:@"status: off"];
+    [switchStatusLabel setTextColor:[CPColor colorWithWhite:0 alpha:0.5]];
+    [switchStatusLabel setFrameOrigin:CGPointMake(100,410)];
+    [contentView addSubview:switchStatusLabel];
+ 
 }
-
+ 
 - (void)didClickSegmented:(id)sender
 {
     var index = [sender tagForSegment:[sender selectedSegment]];
     
     [slideView slideToView:[[slideView subviews] objectAtIndex:index]];
 }
-
--(void)calendarView:(LPCalendarView)aCalendarView didMakeSelection:(CPDate)aStartDate end:(CPDate)anEndDate
+ 
+- (void)calendarView:(LPCalendarView)aCalendarView didMakeSelection:(CPDate)aStartDate end:(CPDate)anEndDate
 {
-    [calendarSelectionLabel setStringValue:[CPString stringWithFormat:@"Selected: %s", aStartDate]];
-    [calendarSelectionLabel sizeToFit];
+    [calendarSelectionLabel setStringValue:[CPString stringWithFormat:@"Selected: %s", aStartDate.toUTCString()]];
 }
-
+ 
+- (void)switchDidChange:(id)sender
+{
+    [switchStatusLabel setStringValue:@"status: " + (([sender isOn]) ? @"on" : @"off")];
+    [switchStatusLabel sizeToFit];
+}
+ 
 @end

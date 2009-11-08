@@ -1,0 +1,29 @@
+/*
+ * Jakefile
+ * LPAristo
+ *
+ * Created by You on November 7, 2009.
+ * Copyright 2009, Your Company All rights reserved.
+ */
+
+var ENV = require("system").env,
+    FILE = require("file"),
+    task = require("jake").task,
+    FileList = require("jake").FileList,
+    blend = require("cappuccino/jake").blend,
+    configuration = ENV["CONFIG"] || ENV["CONFIGURATION"] || ENV["c"] || "Debug";
+
+
+blend ("LPAristo.blend", function(LPAristoTask)
+{
+    LPAristoTask.setBuildIntermediatesPath(FILE.join("Build", "LPAristo.build", configuration))
+    LPAristoTask.setBuildPath(FILE.join("Build", configuration));
+
+    LPAristoTask.setThemeDescriptors(new FileList("ThemeDescriptors.j"));
+    LPAristoTask.setPlatforms([BundleTask.Platform.Browser, BundleTask.Platform.CommonJS]);
+    LPAristoTask.setIdentifier("com.280n.com.yourcompany.LPAristo");
+    LPAristoTask.setResources(new FileList("Resources/*"));
+});
+
+task ("build", ["LPAristo.blend"]);
+task ("default", ["build"]);

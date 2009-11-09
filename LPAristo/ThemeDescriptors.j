@@ -57,7 +57,7 @@
     var calendarView = [[LPCalendarView alloc] initWithFrame:CGRectMake(0,0,195,172)];
     [calendarView setMonth:[CPDate date]];
 
-    [calendarView setValue:[CPColor colorWithWhite:0.8 alpha:1] forThemeAttribute:@"grid-color"]
+    [calendarView setValue:[CPColor colorWithHexString:@"ccc"] forThemeAttribute:@"grid-color"]
 
     /* Calendar View
     */

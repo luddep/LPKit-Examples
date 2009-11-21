@@ -913,6 +913,8 @@ objj_markedStream.prototype.getMarker = function()
     if (next < 0)
         return NULL;
     var marker = string.substring(location, next);
+    if (marker === 'e')
+        return NULL;
     this._location = next + 1;
     return marker;
 }
@@ -1280,25 +1282,28 @@ _CPPropertyList280NorthSerializers["dictionary"] = function(aDictionary, seriali
     }
     return string + END_MARKER + ';';
 }
-var OBJJ_PLATFORMS = ["Browser", "ObjJ"];
-function objj_firstCompatibleEngineFromArray(engines)
+var OBJJ_ENVIRONMENTS = ["ObjJ"];
+var userAgent = window.navigator.userAgent;
+if (userAgent.indexOf("MSIE 7") !== -1)
+    OBJJ_ENVIRONMENTS.unshift("IE7");
+else if (userAgent.indexOf("MSIE 8") !== -1)
+    OBJJ_ENVIRONMENTS.unshift("IE8");
+else
+    OBJJ_ENVIRONMENTS.unshift("W3C");
+function objj_mostEligibleEnvironmentFromArray(environments)
 {
-    var engine = NULL,
-        index = 0,
-        count = OBJJ_PLATFORMS.length,
-        innerCount = engines.length;
+    var index = 0,
+        count = OBJJ_ENVIRONMENTS.length,
+        innerCount = environments.length;
     for(; index < count; ++index)
     {
         var innerIndex = 0,
-            currentEngine = OBJJ_PLATFORMS[index];
+            environment = OBJJ_ENVIRONMENTS[index];
         for (; innerIndex < innerCount; ++innerIndex)
-            if(currentEngine=== engines[innerIndex])
-            {
-                engine = currentEngine;
-                break;
-            }
+            if(environment === environments[innerIndex])
+                return environment;
     }
-    return engine;
+    return NULL;
 }
 var OBJJFileNotFoundException = "OBJJFileNotFoundException",
     OBJJExecutableNotFoundException = "OBJJExecutableNotFoundException";
@@ -1534,11 +1539,11 @@ objj_search.prototype.didReceiveBundleResponse = function(aResponse)
     var executablePath = ((bundle.info)._buckets["CPBundleExecutable"]);
     if (executablePath)
     {
-        var platform = objj_firstCompatibleEngineFromArray(((bundle.info)._buckets["CPBundlePlatforms"]));
-        executablePath = platform + ".platform/" + executablePath;
+        var environment = objj_mostEligibleEnvironmentFromArray(((bundle.info)._buckets["CPBundleEnvironments"]));
+        executablePath = environment + ".environment/" + executablePath;
         this.request((aResponse.filePath).substr(0, (aResponse.filePath).lastIndexOf('/') + 1) + executablePath, this.didReceiveExecutableResponse);
         var directory = (aResponse.filePath).substr(0, (aResponse.filePath).lastIndexOf('/') + 1),
-            replacedFiles = ((((bundle.info)._buckets["CPBundleReplacedFiles"]))._buckets[platform]),
+            replacedFiles = ((((bundle.info)._buckets["CPBundleReplacedFiles"]))._buckets[environment]),
             index = 0,
             count = replacedFiles.length;
         for (; index < count; ++index)
@@ -1691,7 +1696,10 @@ function objj_decompile(aString, bundle)
                                         files.push(file);
                                         objj_files[file.path] = file;
                                         break;
-            case MARKER_URI: bundle._URIMap[text] = stream.getString();
+            case MARKER_URI: var URI = stream.getString();
+                                        if (URI.toLowerCase().indexOf("mhtml:") === 0)
+                                            URI = "mhtml:" + (window.location.href).substr(0, (window.location.href).lastIndexOf('/') + 1) + '/' + (bundle.path).substr(0, (bundle.path).lastIndexOf('/') + 1) + '/' + URI.substr("mhtml:".length);
+                                        bundle._URIMap[text] = URI;
                                         break;
             case MARKER_BUNDLE: var bundlePath = (bundle.path).substr(0, (bundle.path).lastIndexOf('/') + 1) + '/' + text;
                                         file.bundle = objj_getBundleWithPath(bundlePath);

@@ -20,7 +20,7 @@ blend ("LPAristo.blend", function(LPAristoTask)
     LPAristoTask.setBuildPath(FILE.join("Build", configuration));
 
     LPAristoTask.setThemeDescriptors(new FileList("ThemeDescriptors.j"));
-    LPAristoTask.setPlatforms([BundleTask.Platform.Browser, BundleTask.Platform.CommonJS]);
+    //LPAristoTask.setPlatforms([BundleTask.Platform.Browser, BundleTask.Platform.CommonJS]);
     LPAristoTask.setIdentifier("com.280n.com.yourcompany.LPAristo");
     LPAristoTask.setResources(new FileList("Resources/*"));
 });

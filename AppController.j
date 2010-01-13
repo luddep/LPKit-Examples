@@ -8,25 +8,32 @@
 @import <Foundation/CPObject.j>
 @import <LPKit/LPKit.j>
 
-var LPAristo;
+@import "ControlsAndViewsView.j"
+@import "ChartsView.j"
+
+LPAristo = nil;
+
+var repositoryURL = @"http://github.com/luddep/LPKit";
 
 @implementation AppController : CPObject
 {
     CPWindow theWindow;
+    CPSegmentedControl navigation;
     
     LPSlideView slideView;
-    CPTextField calendarSelectionLabel;
-    CPTextField switchStatusLabel;
+    
+    id controlsAndViewsView;
+    id chartsView;
 }
  
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
+    [theWindow setAcceptsMouseMovedEvents:YES];
     [theWindow orderFront:self];
     
     var lpAristoTheme = [[CPThemeBlend alloc] initWithContentsOfURL:@"LPAristo/Build/Debug/LPAristo.blend"]; 
     [lpAristoTheme loadWithDelegate:self];
-
 }
 
 - (void)blendDidFinishLoading:(CPBundle)aBundle
@@ -34,125 +41,113 @@ var LPAristo;
     LPAristo = [CPTheme themeNamed:@"LPAristo"];
     //[CPTheme setDefaultTheme:[CPTheme themeNamed:@"LPAristo"]];
     
-    var contentView = [theWindow contentView];
+    var contentView = [theWindow contentView],
+        bounds = [contentView bounds];
  
-    /*
+    [contentView setBackgroundColor:[CPColor colorWithHexString:@"eee"]];
+
+    var title = [CPTextField labelWithTitle:@"LPKit Examples"];
+    [title setFont:[CPFont systemFontOfSize:25]];
+    [title setTextColor:[CPColor colorWithWhite:0 alpha:0.8]];
+    [title setTextShadowColor:[CPColor whiteColor]];
+    [title setTextShadowOffset:CGSizeMake(1,1)];
+    [title setFrameOrigin:CGPointMake(100,30)];
+    [title sizeToFit];
+    [contentView addSubview:title];
     
-        LPSlideView
+    var description = [CPTextField labelWithTitle:@"A demo application showing (most) of LPKit."];
+    [description setFont:[CPFont boldSystemFontOfSize:12]];
+    [description setTextColor:[CPColor colorWithWhite:0 alpha:0.4]];
+    [description setTextShadowColor:[CPColor whiteColor]];
+    [description setTextShadowOffset:CGSizeMake(1,1)];
+    [description setFrameOrigin:CGPointMake(100, CGRectGetMaxY([title frame]))];
+    [description sizeToFit];
+    [contentView addSubview:description];
     
-    */
- 
-    var slideViewLabel = [CPTextField labelWithTitle:@"LPSlideView"];
-    [slideViewLabel setFrameOrigin:CGPointMake(100, 70)];
-    [contentView addSubview:slideViewLabel];
- 
-    slideView = [[LPSlideView alloc] initWithFrame:CGRectMake(100,100,200,100)];
-    //[slideView setSlideDirection:LPSlideViewVerticalDirection];
-    [contentView addSubview:slideView];
+    var githubLink = [LPAnchorButton buttonWithTitle:repositoryURL];
+    [githubLink setTextColor:[CPColor colorWithWhite:0 alpha:0.3]];
+    [githubLink setTextHoverColor:[CPColor colorWithWhite:0 alpha:0.6]];
+    [githubLink setFrameOrigin:CGPointMake(100, CGRectGetMaxY([description frame]) + 2)];
+    [githubLink setTarget:self];
+    [githubLink setAction:@selector(didClickGithubLink:)]
+    [contentView addSubview:githubLink];
+
+    var box = [[CPBox alloc] initWithFrame:CGRectMake(100, 120, CGRectGetWidth(bounds) - 200, CGRectGetHeight(bounds) - 240)];
+    [box setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+    [box setBorderType:CPLineBorder];
+    [box setBorderColor:[CPColor colorWithWhite:0 alpha:0.2]];
+    [box setBackgroundColor:[CPColor whiteColor]];
+    [contentView addSubview:box];
+
+    // Navigation controller
+    navigation = [[CPSegmentedControl alloc] initWithFrame:CGRectMake(0,0, 180, 28)];
+    [navigation setCenter:CGPointMake(CGRectGetMidX(bounds), CGRectGetMinY([box frame]))];
+    [navigation setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin];
+    [navigation setSegmentCount:2];
     
-    var greenView = [[CPView alloc] initWithFrame:[slideView bounds]];
-    [greenView setBackgroundColor:[CPColor colorWithHexString:@"c2e890"]];
-    [slideView addSubview:greenView];
+    [navigation setWidth:120.0 forSegment:0];
+    [navigation setLabel:@"Views & Controls" forSegment:0];
+    [navigation setTag:@"views" forSegment:0];
     
-    var blueView = [[CPView alloc] initWithFrame:[slideView bounds]];
-    [blueView setBackgroundColor:[CPColor colorWithHexString:@"90c8e8"]];
-    [slideView addSubview:blueView];
+    [navigation setWidth:60.0 forSegment:1];
+    [navigation setLabel:@"Charts" forSegment:1];
+    [navigation setTag:@"charts" forSegment:1];
     
-    var redView = [[CPView alloc] initWithFrame:[slideView bounds]];
-    [redView setBackgroundColor:[CPColor colorWithHexString:@"e89090"]];
-    [slideView addSubview:redView];
+    [navigation setTarget:self];
+    [navigation setAction:@selector(didClickNavigation:)];
+    [contentView addSubview:navigation];
     
-    var segmentedControl = [[CPSegmentedControl alloc] initWithFrame:CGRectMake(CGRectGetMinX([slideView frame]), CGRectGetMaxY([slideView frame]) + 5, 124, 24)];
-    [segmentedControl setSegmentCount:3];
-    [segmentedControl setLabel:@"First" forSegment:0];
-    [segmentedControl setTag:0 forSegment:0];
-    [segmentedControl setLabel:@"Second" forSegment:1];
-    [segmentedControl setTag:1 forSegment:1];
-    [segmentedControl setLabel:@"Third" forSegment:2];
-    [segmentedControl setTag:2 forSegment:2];
-    [segmentedControl setTarget:self];
-    [segmentedControl setAction:@selector(didClickSegmented:)];
-    [segmentedControl setSelectedSegment:0];
+    var boxBounds = [[box contentView] bounds];
     
-    [contentView addSubview:segmentedControl];
- 
-    /*
+    slideView = [[LPSlideView alloc] initWithFrame:boxBounds];
+    [[box contentView] addSubview:slideView];
     
-        LPCalendarView
-    
-    */
- 
-    var slideViewLabel = [CPTextField labelWithTitle:@"LPCalendarView"];
-    [slideViewLabel setFrameOrigin:CGPointMake(400, 70)];
-    [contentView addSubview:slideViewLabel];
- 
-    var calendarView = [[LPCalendarView alloc] initWithFrame:CGRectMake(400, 100, 180, 160)];
-    [calendarView setTheme:LPAristo];
-    [calendarView setMonth:[CPDate date]];
-    [calendarView setDelegate:self];
-    [contentView addSubview:calendarView];
-    
-    calendarSelectionLabel = [CPTextField textFieldWithStringValue:@"" placeholder:@"selection" width:300];
-    [calendarSelectionLabel setFrameOrigin:CGPointMake(400,270)]
-    [contentView addSubview:calendarSelectionLabel];
- 
-    /*
-    
-        LPSparkLine
-    
-    */
- 
-    var sparkLineLabel = [CPTextField labelWithTitle:@"LPSparkLine"];
-    [sparkLineLabel setFrameOrigin:CGPointMake(680, 70)];
-    [contentView addSubview:sparkLineLabel];
-    
-    var sparkLine = [[LPSparkLine alloc] initWithFrame:CGRectMake(680, 100, 100, 30)];
-    [sparkLine setLineWeight:2.0];
-    [sparkLine setLineColor:[CPColor colorWithHexString:@"aad8ff"]];
-    [sparkLine setShadowColor:[CPColor colorWithHexString:@"999"]];
-    [sparkLine setData:[10,25,30,42,10,30,22,70,30,21,44,21,77,55,88,54]];
-    [contentView addSubview:sparkLine];
- 
- 
-    /*
-    
-        LPSwitch
-    
-    */
- 
-    var switchLabel = [CPTextField labelWithTitle:@"LPSwitch"];
-    [switchLabel setFrameOrigin:CGPointMake(100, 340)];
-    [contentView addSubview:switchLabel];
-    
-    var aSwitch = [[LPSwitch alloc] initWithFrame:CGRectMake(100,380,77,24)];
-    [aSwitch setTheme:LPAristo];
-    [aSwitch setTarget:self];
-    [aSwitch setAction:@selector(switchDidChange:)];
-    [contentView addSubview:aSwitch];
-    
-    switchStatusLabel = [CPTextField labelWithTitle:@"status: off"];
-    [switchStatusLabel setTextColor:[CPColor colorWithWhite:0 alpha:0.5]];
-    [switchStatusLabel setFrameOrigin:CGPointMake(100,410)];
-    [contentView addSubview:switchStatusLabel];
- 
-}
- 
-- (void)didClickSegmented:(id)sender
+    controlsAndViewsView = [[ControlsAndViewsView alloc] initWithFrame:boxBounds];
+    [slideView addSubview:controlsAndViewsView];
+
+    chartsView = [[ChartsView alloc] initWithFrame:boxBounds];
+    [slideView addSubview:chartsView];
+
+    // Register for location changes
+    [[LPLocationController sharedLocationController] addObserver:self selector:@selector(locationDidChange:)];
+} 
+
+- (void)didClickNavigation:(id)sender
 {
-    var index = [sender tagForSegment:[sender selectedSegment]];
+    var tag = [sender selectedTag];
     
-    [slideView slideToView:[[slideView subviews] objectAtIndex:index]];
+    // Update location
+    [[LPLocationController sharedLocationController] setLocation:tag];
+    
+    [self selectedNavigationItemWithTag:tag];
 }
- 
-- (void)calendarView:(LPCalendarView)aCalendarView didMakeSelection:(CPDate)aStartDate end:(CPDate)anEndDate
+
+- (void)locationDidChange:(CPString)aLocation
 {
-    [calendarSelectionLabel setStringValue:[CPString stringWithFormat:@"Selected: %s", aStartDate.toUTCString()]];
+    [self selectedNavigationItemWithTag:aLocation];
 }
- 
-- (void)switchDidChange:(id)sender
+
+- (void)selectedNavigationItemWithTag:(CPString)aTag
 {
-    [switchStatusLabel setStringValue:@"status: " + (([sender isOn]) ? @"on" : @"off")];
-    [switchStatusLabel sizeToFit];
+    // Default tag, aTag might be empty
+    if (!aTag)
+        aTag = @"views";
+    
+    [navigation selectSegmentWithTag:aTag];
+    
+    switch (aTag)
+    {
+        case @"views":  [slideView slideToView:controlsAndViewsView];
+                        break;
+                        
+        case @"charts": [slideView slideToView:chartsView];
+                        break;
+    }
+}
+
+- (void)didClickGithubLink:(id)sender
+{
+    window.open(repositoryURL);
 }
  
 @end

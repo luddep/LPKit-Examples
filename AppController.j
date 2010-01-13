@@ -74,6 +74,7 @@ var repositoryURL = @"http://github.com/luddep/LPKit";
 
     var box = [[CPBox alloc] initWithFrame:CGRectMake(100, 120, CGRectGetWidth(bounds) - 200, CGRectGetHeight(bounds) - 240)];
     [box setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+    [[box contentView] setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
     [box setBorderType:CPLineBorder];
     [box setBorderColor:[CPColor colorWithWhite:0 alpha:0.2]];
     [box setBackgroundColor:[CPColor whiteColor]];
@@ -100,6 +101,7 @@ var repositoryURL = @"http://github.com/luddep/LPKit";
     var boxBounds = [[box contentView] bounds];
     
     slideView = [[LPSlideView alloc] initWithFrame:boxBounds];
+    [slideView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
     [[box contentView] addSubview:slideView];
     
     controlsAndViewsView = [[ControlsAndViewsView alloc] initWithFrame:boxBounds];

@@ -146,4 +146,26 @@
     return calendarView;
 }
 
++ (LPPieChartDrawView)themedPieChartDrawView
+{
+    var drawView = [[LPPieChartDrawView alloc] initWithFrame:CGRectMakeZero()],
+        fillColors = [
+                        [CPColor colorWithHexString:@"7fca43"],
+                        [CPColor colorWithHexString:@"4379ca"],
+                        [CPColor colorWithHexString:@"ca4343"],
+                        [CPColor colorWithHexString:@"dcd639"],
+                        [CPColor colorWithHexString:@"ca9f43"],
+                        [CPColor colorWithHexString:@"af43ca"],
+                        [CPColor colorWithHexString:@"43afca"]
+                    ];
+    
+    
+    
+    [drawView setValue:fillColors forThemeAttribute:@"fill-colors"];
+    [drawView setValue:[CPColor whiteColor] forThemeAttribute:@"stroke-color"];
+    [drawView setValue:1.0 forThemeAttribute:@"line-width"];
+    
+    return drawView;
+}
+
 @end

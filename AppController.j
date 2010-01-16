@@ -68,8 +68,7 @@ var repositoryURL = @"http://github.com/luddep/LPKit";
     [githubLink setTextColor:[CPColor colorWithWhite:0 alpha:0.3]];
     [githubLink setTextHoverColor:[CPColor colorWithWhite:0 alpha:0.6]];
     [githubLink setFrameOrigin:CGPointMake(100, CGRectGetMaxY([description frame]) + 2)];
-    [githubLink setTarget:self];
-    [githubLink setAction:@selector(didClickGithubLink:)]
+    [githubLink openURLOnClick:[CPURL URLWithString:repositoryURL]]
     [contentView addSubview:githubLink];
 
     var box = [[CPBox alloc] initWithFrame:CGRectMake(100, 120, CGRectGetWidth(bounds) - 200, CGRectGetHeight(bounds) - 240)];
@@ -145,11 +144,6 @@ var repositoryURL = @"http://github.com/luddep/LPKit";
         case @"charts": [slideView slideToView:chartsView];
                         break;
     }
-}
-
-- (void)didClickGithubLink:(id)sender
-{
-    window.open(repositoryURL);
 }
  
 @end

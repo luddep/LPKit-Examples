@@ -7,7 +7,6 @@
  
 @import <Foundation/CPObject.j>
 @import <LPKit/LPKit.j>
-
 @import "ControlsAndViewsView.j"
 @import "ChartsView.j"
 
@@ -74,14 +73,14 @@ var repositoryURL = @"http://github.com/luddep/LPKit";
     var box = [[CPBox alloc] initWithFrame:CGRectMake(100, 120, CGRectGetWidth(bounds) - 200, CGRectGetHeight(bounds) - 240)];
     [box setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
     [[box contentView] setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+    [box setCornerRadius:2.0];
     [box setBorderType:CPLineBorder];
     [box setBorderColor:[CPColor colorWithWhite:0 alpha:0.2]];
     [box setBackgroundColor:[CPColor whiteColor]];
     [contentView addSubview:box];
 
     // Navigation controller
-    navigation = [[CPSegmentedControl alloc] initWithFrame:CGRectMake(0,0, 180, 28)];
-    [navigation setCenter:CGPointMake(CGRectGetMidX(bounds), CGRectGetMinY([box frame]))];
+    navigation = [[CPSegmentedControl alloc] initWithFrame:CGRectMake(0,0, 0, 28)];
     [navigation setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin];
     [navigation setSegmentCount:2];
     
@@ -95,11 +94,14 @@ var repositoryURL = @"http://github.com/luddep/LPKit";
     
     [navigation setTarget:self];
     [navigation setAction:@selector(didClickNavigation:)];
+    [navigation setCenter:CGPointMake(CGRectGetMidX(bounds), CGRectGetMinY([box frame]))];
     [contentView addSubview:navigation];
     
     var boxBounds = [[box contentView] bounds];
     
     slideView = [[LPSlideView alloc] initWithFrame:boxBounds];
+    [slideView setAnimationCurve:CPAnimationEaseInOut];
+    [slideView setAnimationDuration:0.5];
     [slideView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
     [[box contentView] addSubview:slideView];
     

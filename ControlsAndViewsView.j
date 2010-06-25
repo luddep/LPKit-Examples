@@ -44,7 +44,7 @@
         [redView setBackgroundColor:[CPColor colorWithHexString:@"e89090"]];
         [slideView addSubview:redView];
 
-        var segmentedControl = [[CPSegmentedControl alloc] initWithFrame:CGRectMake(CGRectGetMinX([slideView frame]), CGRectGetMaxY([slideView frame]) + 5, 124, 24)];
+        var segmentedControl = [[CPSegmentedControl alloc] initWithFrame:CGRectMake(CGRectGetMinX([slideView frame]), CGRectGetMaxY([slideView frame]) + 5, 5, 24)];
         [segmentedControl setSegmentCount:3];
         [segmentedControl setLabel:@"First" forSegment:0];
         [segmentedControl setTag:0 forSegment:0];
@@ -68,7 +68,7 @@
         [slideViewLabel setFrameOrigin:CGPointMake(400, 70)];
         [self addSubview:slideViewLabel];
 
-        var calendarView = [[LPCalendarView alloc] initWithFrame:CGRectMake(400, 100, 180, 160)];
+        var calendarView = [[LPCalendarView alloc] initWithFrame:CGRectMake(400, 100, 189, 166)];
         [calendarView setTheme:LPAristo];
         [calendarView setMonth:[CPDate date]];
         [calendarView setDelegate:self];

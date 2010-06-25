@@ -67,6 +67,8 @@
     /* Header View
     */
     
+    [calendarView setValue:40 forThemeAttribute:@"header-height" inState:CPThemeStateNormal];
+    
     var headerBackgroundImage = [_CPCibCustomResource imageResourceWithName:@"LPCalendarView/header-background.png" size:CGSizeMake(182.0, 40.0)];
     [calendarView setValue:[CPColor colorWithPatternImage:headerBackgroundImage] forThemeAttribute:@"header-background-color" inState:CPThemeStateNormal];
     
@@ -76,8 +78,22 @@
     [calendarView setValue:CGSizeMake(1.0, 1.0) forThemeAttribute:@"header-text-shadow-offset" inState:CPThemeStateNormal];
     [calendarView setValue:CPCenterTextAlignment forThemeAttribute:@"header-alignment" inState:CPThemeStateNormal];
 
+    // Arrows
+    [calendarView setValue:CGSizeMake(10, 7) forThemeAttribute:@"header-button-offset" inState:CPThemeStateNormal];
+    [calendarView setValue:[CPColor colorWithPatternImage:[_CPCibCustomResource imageResourceWithName:@"LPCalendarView/previous.png" size:CGSizeMake(16.0, 16.0)]] forThemeAttribute:@"header-prev-button-image" inState:CPThemeStateNormal];
+    [calendarView setValue:[CPColor colorWithPatternImage:[_CPCibCustomResource imageResourceWithName:@"LPCalendarView/next.png" size:CGSizeMake(16.0, 16.0)]] forThemeAttribute:@"header-next-button-image" inState:CPThemeStateNormal];
+
+    // Weekday labels
+    [calendarView setValue:25 forThemeAttribute:@"header-weekday-offset" inState:CPThemeStateNormal];
+    [calendarView setValue:[CPFont systemFontOfSize:9.0] forThemeAttribute:@"header-weekday-label-font" inState:CPThemeStateNormal];
+    [calendarView setValue:[CPColor colorWithWhite:0 alpha:0.57] forThemeAttribute:@"header-weekday-label-color" inState:CPThemeStateNormal];
+    [calendarView setValue:[CPColor colorWithWhite:1 alpha:0.8] forThemeAttribute:@"header-weekday-label-shadow-color" inState:CPThemeStateNormal];
+    [calendarView setValue:CGSizeMake(0.0, 1.0) forThemeAttribute:@"header-weekday-label-shadow-offset" inState:CPThemeStateNormal];
+
     /* Day Tile View
     */
+    [calendarView setValue:CGSizeMake(27, 21) forThemeAttribute:@"tile-size" inState:CPThemeStateNormal];
+    
     // Normal
     var bezelColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
                 [

@@ -5,6 +5,8 @@ Example app showing off the current parts of [LPKit](http://github.com/luddep/LP
 
 ## Building
 
+### Initialize and link `LPKit` as a submodule
+
 First run
 
 	$ git submodule init
@@ -15,9 +17,13 @@ so `LPKit` is cloned as a submodule.  Then, go into its directory, and run
 
 	$ jake symlink-narwhal
 
-or run it where your copy of LPKit is.  The copy on which you run `jake symlink-narwhal` would be used as the implicit copy when you build `LPAristo`.
+or run it where your copy of `LPKit` is.  The copy on which you run `jake symlink-narwhal` would be used as the implicit copy when you build `LPAristo`.
+
+### Build `LPAristo`
 
 After having a copy of `LPKit` registered, go inside `LPAristo`, and run `jake` there.
+
+### Initialize the Cappuccino framework
 
 Finally, go outside of the directory and run
 

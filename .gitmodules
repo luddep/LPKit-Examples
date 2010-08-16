@@ -1,0 +1,3 @@
+[submodule "Frameworks/LPKit"]
+	path = Frameworks/LPKit
+	url = git://github.com/luddep/LPKit.git
